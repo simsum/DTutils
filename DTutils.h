@@ -19,7 +19,8 @@ private:
     
 };
 
-int DAYOFYEAR(int Year, int Month, int Day);
-int LEAPYEAR (int Year);
+int DayOfYear(int Year, int Month, int Day);
+int LeapYear (int Year);
+float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);
 
 #endif
