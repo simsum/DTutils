@@ -19,6 +19,9 @@ private:
     
 };
 
+int EasterCode(int Year);
+int StartDateDaylightSaving (int Year);
+int EndDateDaylightSaving (int Year);
 int DayOfYear(int Year, int Month, int Day);
 int LeapYear (int Year);
 float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);

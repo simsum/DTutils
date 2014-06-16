@@ -9,6 +9,57 @@
 #include "DTutils.h"
 #include "Arduino.h"
 
+// Osterkennzahl berechnen, wird für weitere Berechnungen benötigt
+// siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+
+int EasterCode(int Year)
+{
+    int a;    //Hilfvariable
+    int b;    //Hilfvariable
+    int c;    //Hilfvariable
+    int e;    //Osterkennzahl
+    a = (Year % 19 * 19 + 24) % 30;
+    b = 120 + a - (a / 27);
+    c = (b + (Year * 5 / 4) - (Year / 2100)) % 7;
+    e = b - c;
+    return e;
+}
+
+// Tag Start Sommerzeit (02:00 Uhr/März) - Schaltjahre werden berücksichtigt
+
+int StartDateDaylightSaving(int Year)
+{
+    int e = EasterCode(Year);
+    int Day;
+    Day = 25 + (e + 2) % 7;
+    return Day;
+}
+
+// Tag Ende Sommerzeit (03:00 Uhr/Oktober)
+
+
+int EndDateDaylightSaving(int Year)
+{
+    int e = EasterCode(Year);
+    int Day;
+    Day = 25 + (e + 5) % 7;
+    return Day;
+}
+
+//Die Funktion DaylightSaving überprüft, ob im Augenblick Sommerzeit herrscht, oder nicht.
+//Die Sommerzeit wird aufgrund von UTC (Weltzeit) berechnet.
+
+bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute)                    // TRUE/HIGH wenn Sommerzeit
+{
+    bool active;
+    long StartDSInM   = (DayOfYear(Year, 3, StartDateDaylightSaving(Year)) *1440) + 120;    // Start Sommerzeit in Minuten
+    long EndDSInM     = (DayOfYear(Year, 10, EndDateDaylightSaving(Year)) * 1440) + 180;    // Ende Sommerzeit in Minuten
+    long NowInMinute  = (DayOfYear(Year, Month, Day) * 1440) + (Hour * 60) + Minute;        // aktuelle Minuten im Jahr
+    
+    active = NowInMinute >= StartDSInM && NowInMinute <= EndDSInM;                          // Ausgang TRUE wenn Zeitraum innerhalb Sommerzeit
+    return active;
+}
+
 //Die Funktion DAYOFYEAR berechnet den Tag des Jahres aus dem Eingangsdatum.
 
 int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12.2012 = 366)
