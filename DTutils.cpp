@@ -19,9 +19,9 @@ int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12
 }
 
 
-//Die Funktion LEAPYEAR testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE aus.
+//Die Funktion LEAPYEAR testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE bzw. "1" aus.
 
-int LEAPYEAR (int Year)                     // Schaltjahr aktiv (1 = Ja)
+int LeapYear (int Year)                     // Schaltjahr aktiv (1 = Ja)
 {
     int sj = (1/(1 + Year % 4)) - (1/(1 + Year % 100)) + (1/(1 + Year % 400));
     return sj;
