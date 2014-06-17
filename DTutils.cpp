@@ -9,6 +9,7 @@
 #include "DTutils.h"
 #include "Arduino.h"
 
+
 // Monatskennziffer festlegen (wird u.a. zur Wochentagsberechnung benötigt)
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
@@ -62,7 +63,6 @@ int StartDateDaylightSaving(int Year)
 
 // Tag Ende Sommerzeit (03:00 Uhr/Oktober)
 
-
 int EndDateDaylightSaving(int Year)
 {
     int e = EasterCode(Year);
@@ -105,7 +105,7 @@ int LeapYear (int Year)                     // Schaltjahr aktiv (1 = Ja)
 
 // noch zu testende Funktionen !!!
 
-//Die Funktion SUN_MIDDAY berechnet abhängig vom Tagesdatum zu welcher Tageszeit die Sonne exakt im Süden steht.
+//Die Funktion sunMiddayTimeUTC berechnet abhängig vom Tagesdatum zu welcher Tageszeit die Sonne exakt im Süden steht.
 //Die Berechnung erfolgt in UTC (Weltzeit).
 //Lon = Längengrad des Bezugsortes.
 
@@ -115,5 +115,12 @@ float sunMiddayTimeUTC (float Lon, int Year, int Month, int Day)
     float OFFSET = -0.1752 * sin(0.033430 * T + 0.5474) - 0.1340 * sin(0.018234 * T - 0.1939);
     float SunMidday = (12.0 - OFFSET - Lon * 0.0666666666666);
     return SunMidday;
+    
+}
+
+//Die Funktion DTToInt konvertiert das Datums und Zeit Format in Sekunden seit 1970.
+
+unsigned long DTToInt(dtElements dt) //(int Year, int Month, int Day, int Hour, int Minute, int Second)
+{
     
 }

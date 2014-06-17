@@ -11,6 +11,15 @@
 
 #include "Arduino.h"
 
+typedef struct  {
+    uint8_t Year;
+    uint8_t Month;
+    uint8_t Day;
+    uint8_t Hour;
+    uint8_t Minute;
+    uint8_t Second;
+} 	dtElements;
+
 class DTutils
 {
 public:
