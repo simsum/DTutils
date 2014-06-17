@@ -120,18 +120,30 @@ float sunMiddayTimeUTC (float Lon, int Year, int Month, int Day)
     
 }
 
-//Die Funktion DTToInt konvertiert das Datums- und Zeit-Format in Sekunden seit 1970. (makeTime aus Time.h berechnet falsch)
+//  Die Funktion DTToInt konvertiert das Datums- und Zeit-Format in Sekunden seit 1970.
+//  (makeTime aus Time.h berechnet nicht das UNIX Format seit 1970)
 
-unsigned long DTToInt(dtElements dt) //(int Year, int Month, int Day, int Hour, int Minute, int Second)
+unsigned long DTToInt(dtElements dt)
 {
-    
     int i;
-    unsigned long seconds;
+    uint32_t seconds;
     seconds = (dt.Year - 1970) * SECS_PER_YEAR;
-    for (i = 0; i < dt.Year - 1970; i++) {
-        if (LeapYear(dt.Year)) {
-            seconds +=  SECS_PER_DAY;   // add extra days for leap years
+    for (i = 0; i < (dt.Year - 1970); i++) {
+        if (LeapYear(i + 1970)>= 1) {
+            seconds+= SECS_PER_DAY;   // add extra days for leap years
         }
     }
+    
+    for (i = 1; i < dt.Month; i++) {
+        if ( (i == 2) && LeapYear(dt.Year)) {
+            seconds += SECS_PER_DAY * 29;
+        } else {
+            seconds += SECS_PER_DAY * MonthDays[i-1];  //monthDay array starts from 0
+        }
+    }
+    seconds+= (dt.Day-1) * SECS_PER_DAY;
+    seconds+= dt.Hour * SECS_PER_HOUR;
+    seconds+= dt.Minute * SECS_PER_MIN;
+    seconds+= dt.Second;
     return seconds;
 }
