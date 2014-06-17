@@ -11,6 +11,11 @@
 
 #include "Arduino.h"
 
+#define SECS_PER_MIN  (60UL)
+#define SECS_PER_HOUR (3600UL)
+#define SECS_PER_DAY  (SECS_PER_HOUR * 24UL)
+#define SECS_PER_YEAR (SECS_PER_DAY * 365UL)
+
 typedef struct  {
     uint8_t Year;
     uint8_t Month;
@@ -35,5 +40,6 @@ bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute);
 int DayOfYear(int Year, int Month, int Day);
 int LeapYear (int Year);
 float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);
+unsigned long DTToInt(dtElements dt);
 
 #endif

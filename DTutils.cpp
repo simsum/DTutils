@@ -13,7 +13,11 @@
 // Monatskennziffer festlegen (wird u.a. zur Wochentagsberechnung benötigt)
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
-int MonthDigit[13] = {0, 23, 7, 8, 20, 0, 12, 20, 4, 16, 24, 8, 16};
+static const uint8_t MonthDigit[] = {23,7,8,20,0,12,20,4,16,24,8,16};// API starts from 1, this array starts from 0!!!
+
+// Monatslänge festlegen
+
+static const uint8_t MonthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts from 1, this array starts from 0!!!
 
 //Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
@@ -23,7 +27,7 @@ int DayOfWeek(int Year, int Month, int Day)
     int WeDay;
     int Weekday;
     
-    WeDay = (((5 * Year) + MonthDigit[Month] / 4) + Day - 1) % 7;     //Zwischenergabnis (0=Son, 1=Mon, usw.)
+    WeDay = (((5 * Year) + MonthDigit[Month-1] / 4) + Day - 1) % 7;     //Zwischenergabnis (0=Son, 1=Mon, usw.)
     if (WeDay < 1)                                                    //Endergebnis in der richtigen Folge (1=Mon, 2=Die,... 7=Son)
     {
         Weekday = 7;
@@ -118,9 +122,18 @@ float sunMiddayTimeUTC (float Lon, int Year, int Month, int Day)
     
 }
 
-//Die Funktion DTToInt konvertiert das Datums und Zeit Format in Sekunden seit 1970.
+//Die Funktion DTToInt konvertiert das Datums- und Zeit-Format in Sekunden seit 1970. (makeTime aus Time.h berechnet falsch)
 
 unsigned long DTToInt(dtElements dt) //(int Year, int Month, int Day, int Hour, int Minute, int Second)
 {
     
+    int i;
+    unsigned long seconds;
+    seconds = (dt.Year - 1970) * SECS_PER_YEAR;
+    for (i = 0; i < dt.Year - 1970; i++) {
+        if (LeapYear(dt.Year)) {
+            seconds +=  SECS_PER_DAY;   // add extra days for leap years
+        }
+    }
+    return seconds;
 }
