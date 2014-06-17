@@ -147,3 +147,55 @@ unsigned long DTToInt(dtElements dt)
     seconds+= dt.Second;
     return seconds;
 }
+
+//  Die Funktion IntToDT konvertiert Sekunden seit 1970 in Datum und Zeit.
+//  (breakTime aus Time.h berechnet nicht das UNIX Format Format seit 1970)
+
+void IntToDT(uint32_t Seconds,dtElements &dtEl)
+{
+    uint32_t year;
+    uint8_t month, monthLength;
+    uint32_t time;
+    unsigned long days;
+    
+    time = (uint32_t)Seconds;
+    dtEl.Second = time % 60;
+    time /= 60; // now it is minutes
+    dtEl.Minute = time % 60;
+    time /= 60; // now it is hours
+    dtEl.Hour = time % 24;
+    time /= 24; // now it is days
+    
+    year = 0;
+    days = 0;
+    while((unsigned)(days += (LeapYear(year) ? 366 : 365)) <= time) {
+        year++;
+    }
+    dtEl.Year = year + 1970;
+    
+    days -= LeapYear(year) ? 366 : 365;
+    time  -= days; // now it is days in this year, starting at 0
+    
+    days=0;
+    month=0;
+    monthLength=0;
+    for (month=0; month<12; month++) {
+        if (month==1) { // february
+            if (LeapYear(year + 1970)) {
+                monthLength=29;
+            } else {
+                monthLength=28;
+            }
+        } else {
+            monthLength = MonthDays[month];
+        }
+        
+        if (time >= monthLength) {
+            time -= monthLength;
+        } else {
+            break;
+        }
+    }
+    dtEl.Month = month + 1;  // jan is month 1
+    dtEl.Day = time + 1;     // day of month
+}
