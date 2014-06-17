@@ -3,7 +3,7 @@
 //  
 //
 //  Created by Sven Steinmeier on 15.06.14.
-//
+//  sven.steinmeier@gmail.com
 //
 
 #include "DTutils.h"
