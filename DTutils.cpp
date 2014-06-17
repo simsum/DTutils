@@ -13,6 +13,27 @@
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
 int MonthDigit[13] = {0, 23, 7, 8, 20, 0, 12, 20, 4, 16, 24, 8, 16};
+
+//Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
+// siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+
+int DayOfWeek(int Year, int Month, int Day)
+{
+    int WeDay;
+    int Weekday;
+    
+    WeDay = (((5 * Year) + MonthDigit[Month] / 4) + Day - 1) % 7;     //Zwischenergabnis (0=Son, 1=Mon, usw.)
+    if (WeDay < 1)                                                    //Endergebnis in der richtigen Folge (1=Mon, 2=Die,... 7=Son)
+    {
+        Weekday = 7;
+    }
+    else
+    {
+        Weekday = WeDay;
+    }
+    return Weekday;
+}
+
 // Osterkennzahl berechnen, wird für weitere Berechnungen benötigt
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
