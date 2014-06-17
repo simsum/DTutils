@@ -19,7 +19,6 @@ private:
     
 };
 
-// int EasterCode(int Year);
 int DayOfWeek (int Year, int Month, int Day);
 int StartDateDaylightSaving (int Year);
 int EndDateDaylightSaving (int Year);
