@@ -9,6 +9,10 @@
 #include "DTutils.h"
 #include "Arduino.h"
 
+// Monatskennziffer festlegen (wird u.a. zur Wochentagsberechnung benötigt)
+// siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+
+int MonthDigit[13] = {0, 23, 7, 8, 20, 0, 12, 20, 4, 16, 24, 8, 16};
 // Osterkennzahl berechnen, wird für weitere Berechnungen benötigt
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
