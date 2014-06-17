@@ -17,7 +17,7 @@
 #define SECS_PER_YEAR (SECS_PER_DAY * 365UL)
 
 typedef struct  {
-    uint8_t Year;
+    uint32_t Year;      //Year 4 Digit!!!
     uint8_t Month;
     uint8_t Day;
     uint8_t Hour;
@@ -41,5 +41,6 @@ int DayOfYear(int Year, int Month, int Day);
 int LeapYear (int Year);
 float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);
 unsigned long DTToInt(dtElements dt);
+void IntToDT(uint32_t Seconds, dtElements &dtEl);
 
 #endif

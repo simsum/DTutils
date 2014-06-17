@@ -19,7 +19,7 @@ static const uint8_t MonthDigit[] = {23,7,8,20,0,12,20,4,16,24,8,16};// API star
 
 static const uint8_t MonthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts from 1, this array starts from 0!!!
 
-//Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
+//  Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
 int DayOfWeek(int Year, int Month, int Day)
@@ -75,8 +75,8 @@ int EndDateDaylightSaving(int Year)
     return Day;
 }
 
-//Die Funktion DaylightSaving überprüft, ob im Augenblick Sommerzeit herrscht, oder nicht.
-//Die Sommerzeit wird aufgrund von UTC (Weltzeit) berechnet.
+//  Die Funktion DaylightSaving überprüft, ob im Augenblick Sommerzeit herrscht, oder nicht.
+//  Sommerzeit wird aufgrund von UTC (Weltzeit) berechnet.
 
 bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute)                    // TRUE/HIGH wenn Sommerzeit
 {
@@ -89,7 +89,7 @@ bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute)        
     return active;
 }
 
-//Die Funktion DAYOFYEAR berechnet den Tag des Jahres aus dem Eingangsdatum.
+//  Die Funktion DAYOFYEAR berechnet den Tag des Jahres aus dem Eingangsdatum.
 
 int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12.2012 = 366)
 {
@@ -99,7 +99,7 @@ int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12
 }
 
 
-//Die Funktion LEAPYEAR testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE bzw. "1" aus.
+//  Die Funktion LEAPYEAR testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE bzw. "1" aus.
 
 int LeapYear (int Year)                     // Schaltjahr aktiv (1 = Ja)
 {
@@ -107,11 +107,9 @@ int LeapYear (int Year)                     // Schaltjahr aktiv (1 = Ja)
     return sj;
 }
 
-// noch zu testende Funktionen !!!
-
-//Die Funktion sunMiddayTimeUTC berechnet abhängig vom Tagesdatum zu welcher Tageszeit die Sonne exakt im Süden steht.
-//Die Berechnung erfolgt in UTC (Weltzeit).
-//Lon = Längengrad des Bezugsortes.
+//  Die Funktion sunMiddayTimeUTC berechnet abhängig vom Tagesdatum zu welcher Tageszeit die Sonne exakt im Süden steht.
+//  Die Berechnung erfolgt in UTC (Weltzeit).
+//  Lon = Längengrad des Bezugsortes.
 
 float sunMiddayTimeUTC (float Lon, int Year, int Month, int Day)
 {
