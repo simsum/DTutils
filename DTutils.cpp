@@ -98,7 +98,7 @@ bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute)        
 
 int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12.2012 = 366)
 {
-    int sj = LeapYear (Year);
+    int sj = LeapYear(Year);
     int DayNbr = Day + 489 * Month / 16 - (7 + Month) / 10 * (2 - sj) -30 ;
     return DayNbr;
 }
