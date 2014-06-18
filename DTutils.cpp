@@ -9,18 +9,38 @@
 #include "DTutils.h"
 #include "Arduino.h"
 
+//  --- intere Funktionen und Konstanten ---
 
-// Monatskennziffer festlegen (wird u.a. zur Wochentagsberechnung benötigt)
-// siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+//  Monatskennziffer festlegen (wird u.a. zur Wochentagsberechnung benötigt)
+//  siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
 static const uint8_t MonthDigit[] = {23,7,8,20,0,12,20,4,16,24,8,16};// API starts from 1, this array starts from 0!!!
 
-// Monatslänge festlegen
+//  Monatslänge festlegen
 
 static const uint8_t MonthDays[]={31,28,31,30,31,30,31,31,30,31,30,31}; // API starts from 1, this array starts from 0!!!
 
-//  Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
+// Osterkennzahl berechnen, wird für weitere Berechnungen benötigt
+// gültig bis 2199
 // siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+
+int EasterCode(int Year)
+{
+    int a;    //Hilfvariable
+    int b;    //Hilfvariable
+    int c;    //Hilfvariable
+    int e;    //Osterkennzahl
+    a = (Year % 19 * 19 + 24) % 30;
+    b = 120 + a - (a / 27);
+    c = (b + (Year * 5 / 4) - (Year / 2100)) % 7;
+    e = b - c;
+    return e;
+}
+
+//  --- Funktionen ---
+
+//  Die Funktion DayOfWeek berechnet den Wochentag aus dem Eingangsdatum.
+//  siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
 
 int DayOfWeek(int Year, int Month, int Day)
 {
@@ -39,21 +59,6 @@ int DayOfWeek(int Year, int Month, int Day)
     return Weekday;
 }
 
-// Osterkennzahl berechnen, wird für weitere Berechnungen benötigt
-// siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
-
-int EasterCode(int Year)
-{
-    int a;    //Hilfvariable
-    int b;    //Hilfvariable
-    int c;    //Hilfvariable
-    int e;    //Osterkennzahl
-    a = (Year % 19 * 19 + 24) % 30;
-    b = 120 + a - (a / 27);
-    c = (b + (Year * 5 / 4) - (Year / 2100)) % 7;
-    e = b - c;
-    return e;
-}
 
 // Tag Start Sommerzeit (02:00 Uhr/März) - Schaltjahre werden berücksichtigt
 
@@ -100,6 +105,7 @@ int DayOfYear (int Year, int Month, int Day)      // ( 05.01.2012 = 5 .... 31.12
 
 
 //  Die Funktion LEAPYEAR testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE bzw. "1" aus.
+//  Gültig für 1901 bis 2099
 
 int LeapYear (int Year)                     // Schaltjahr aktiv (1 = Ja)
 {
