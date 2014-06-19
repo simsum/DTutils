@@ -31,8 +31,10 @@ void loop() {
   dt_to_int.Hour = 14;
   dt_to_int.Minute = 15;
   dt_to_int.Second = 16;
-  Serial.print("DT To Int: (1403014516)");
-  Serial.println(DTToInt(dt_to_int));
+  uint32_t SecUnix;
+  Serial.print("DT To Int: (1403014516) - ");
+  DTToInt(dt_to_int, SecUnix);
+  Serial.println(SecUnix);
   
   Serial.println("Int To DT: (1403014516)");
   IntToDT(1403014516, int_to_dt);
