@@ -129,29 +129,27 @@ float sunMiddayTimeUTC (float Lon, int Year, int Month, int Day)
 //  Die Funktion DTToInt konvertiert das Datums- und Zeit-Format in Sekunden seit 1970.
 //  (makeTime aus Time.h berechnet nicht das UNIX Format seit 1970)
 
-unsigned long DTToInt(dtElements dt)
+void DTToInt(dtElements dtEl, uint32_t &Seconds)
 {
     int i;
-    uint32_t seconds;
-    seconds = (dt.Year - 1970) * SECS_PER_YEAR;
-    for (i = 0; i < (dt.Year - 1970); i++) {
+    Seconds = (dtEl.Year - 1970) * SECS_PER_YEAR;
+    for (i = 0; i < (dtEl.Year - 1970); i++) {
         if (LeapYear(i + 1970)>= 1) {
-            seconds+= SECS_PER_DAY;   // add extra days for leap years
+            Seconds+= SECS_PER_DAY;   // add extra days for leap years
         }
     }
     
-    for (i = 1; i < dt.Month; i++) {
-        if ( (i == 2) && LeapYear(dt.Year)) {
-            seconds += SECS_PER_DAY * 29;
+    for (i = 1; i < dtEl.Month; i++) {
+        if ( (i == 2) && LeapYear(dtEl.Year)) {
+            Seconds += SECS_PER_DAY * 29;
         } else {
-            seconds += SECS_PER_DAY * MonthDays[i-1];  //monthDay array starts from 0
+            Seconds += SECS_PER_DAY * MonthDays[i-1];  //monthDay array starts from 0
         }
     }
-    seconds+= (dt.Day-1) * SECS_PER_DAY;
-    seconds+= dt.Hour * SECS_PER_HOUR;
-    seconds+= dt.Minute * SECS_PER_MIN;
-    seconds+= dt.Second;
-    return seconds;
+    Seconds+= (dtEl.Day-1) * SECS_PER_DAY;
+    Seconds+= dtEl.Hour * SECS_PER_HOUR;
+    Seconds+= dtEl.Minute * SECS_PER_MIN;
+    Seconds+= dtEl.Second;
 }
 
 //  Die Funktion IntToDT konvertiert Sekunden seit 1970 in Datum und Zeit.

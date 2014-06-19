@@ -40,7 +40,7 @@ bool DaylightSaving (int Year, int Month, int Day, int Hour, int Minute);
 int DayOfYear(int Year, int Month, int Day);
 int LeapYear (int Year);
 float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);
-unsigned long DTToInt(dtElements dt);
+void DTToInt(dtElements dtEl, uint32_t &Seconds);
 void IntToDT(uint32_t Seconds, dtElements &dtEl);
 
 #endif
