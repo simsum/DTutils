@@ -42,5 +42,6 @@ int LeapYear (int Year);
 float SunMiddayTimeUTC (float Lon, int Year, int Month, int Day);
 void DTToInt(dtElements dtEl, uint32_t &Seconds);
 void IntToDT(uint32_t Seconds, dtElements &dtEl);
+void LocalTimeToUTC(int8_t TimeZone, bool DLS, dtElements &dtInput, dtElements &dtOutput);
 
 #endif

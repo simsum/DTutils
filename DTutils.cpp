@@ -203,3 +203,13 @@ void IntToDT(uint32_t Seconds,dtElements &dtEl)
     dtEl.Month = month + 1;  // jan is month 1
     dtEl.Day = time + 1;     // day of month
 }
+
+//  (breakTime aus Time.h berechnet nicht das UNIX Format Format seit 1970)
+
+void LocalTimeToUTC(int8_t TimeZone, bool DLS, dtElements &dtInput, dtElements &dtOutput)
+{
+    uint32_t Seconds;
+    DTToInt(dtInput, Seconds);
+    Seconds -= (TimeZone * SECS_PER_HOUR);
+    IntToDT(Seconds, dtOutput);
+}
