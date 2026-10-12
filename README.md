@@ -1,122 +1,82 @@
-DTutils
+# DTutils
 
-Arduino Library mit Zeit und Datums Funktionen.
+[![CI](https://github.com/simsum/DTutils/actions/workflows/ci.yml/badge.svg)](https://github.com/simsum/DTutils/actions/workflows/ci.yml)
 
-DayOfWeek
+Small, dependency-free Arduino library for date and time calculations: weekday, leap year, central European daylight saving time, conversion to and from Unix time, and the time of solar noon.
 
-DayOfWeek gibt als Rückgabewert den Wochentag für das vorgegebene Datum zurück. 
-siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+🇩🇪 [Deutsche Version](README.de.md)
 
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
-int Month - Monat z.b. 6 für Juni
-int Day - Tag z.b. 18
+## Installation
 
-Rückgabewert
-int DayOfWeek - Wochentag „1“ entspricht dem Montag, „2“ Dienstag usw.
+- **Arduino IDE:** *Sketch → Include Library → Add .ZIP Library…* and select the ZIP of this repository (*Code → Download ZIP*).
+- **Manual:** copy the folder to `<Sketchbook>/libraries/DTutils`.
 
-StartDateDaylightSaving
+```cpp
+#include <DTutils.h>
+```
 
-StartDateDaylightSaving gibt als Rückgabewert den Tag im März, zu Beginn der Sommerzeit, für das angegeben Jahr zurück.
-siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+## Quick start
 
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
+```cpp
+dtElements dt = {2014, 6, 17, 14, 15, 16};   // Year, Month, Day, Hour, Minute, Second
+uint32_t unixTime;
 
-Rückgabewert
-int StartDateDaylightSaving - Tag Beginn Sommerzeit z.b. 30 für den 30. März
+DTToInt(dt, unixTime);                        // 1403014516
+IntToDT(unixTime, dt);                        // and back
+Serial.println(DayOfWeek(2014, 6, 17));       // 2 = Tuesday
+```
 
-EndDateDaylightSaving
+See [`examples/DTutils`](examples/DTutils/DTutils.ino) for a complete sketch.
 
-EndDateDaylightSaving gibt als Rückgabewert den Tag im Oktober, zum Ende der Sommerzeit, für das angegeben Jahr zurück.
-siehe auch http://manfred.wilzeck.de/Datum_berechnen.html
+## Data type
 
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
+```cpp
+typedef struct {
+    uint32_t Year;     // 4 digits, e.g. 2014
+    uint8_t  Month;    // 1..12
+    uint8_t  Day;      // 1..31
+    uint8_t  Hour;     // 0..23
+    uint8_t  Minute;   // 0..59
+    uint8_t  Second;   // 0..59
+} dtElements;
+```
 
-Rückgabewert
-int EndDateDaylightSaving - Tag Ende Sommerzeit z.b. 26 für den 26. Oktober
+## Function reference
 
-DaylightSaving
+| Function | Description |
+|---|---|
+| `int DayOfWeek(int Year, int Month, int Day)` | Weekday: `1` = Monday … `7` = Sunday. |
+| `int DayOfYear(int Year, int Month, int Day)` | Day of the year: 5 Jan = 5 … 31 Dec = 365 (366 in leap years). |
+| `int LeapYear(int Year)` | `1` if leap year, otherwise `0`. |
+| `int StartDateDaylightSaving(int Year)` | Day in **March** on which daylight saving time starts (last Sunday), e.g. `30` for 2014. |
+| `int EndDateDaylightSaving(int Year)` | Day in **October** on which daylight saving time ends (last Sunday), e.g. `26` for 2014. |
+| `bool DaylightSaving(int Year, int Month, int Day, int Hour, int Minute)` | `true` if central European summer time (CEST) is active. Pass the time as **UTC**; the switch is at 01:00 UTC. |
+| `void DTToInt(dtElements dt, uint32_t &Seconds)` | Date/time → seconds since 1970-01-01 00:00:00 (Unix time). |
+| `void IntToDT(uint32_t Seconds, dtElements &dt)` | Seconds since 1970 → date/time. |
+| `void LocalTimeToUTC(int8_t TimeZone, bool DLS, dtElements &in, dtElements &out)` | Local time → UTC. `TimeZone` = hours from UTC (CET = `+1`), `DLS` = `true` if daylight saving (+1 h) applies. |
+| `float SunMiddayTimeUTC(float Lon, int Year, int Month, int Day)` | Time of day (UTC, decimal hours) at which the sun is exactly in the south. `Lon` = longitude in degrees, east positive. Example: `11.12` = 11:07 UTC. *Approximation, accurate to about a minute.* |
 
-Die Funktion DaylightSaving überprüft, ob im Augenblick Sommerzeit herrscht, oder nicht.
+Note: the `makeTime`/`breakTime` functions of the Time library work with a different epoch offset; `DTToInt`/`IntToDT` use the standard Unix epoch (1970).
 
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
-int Month - Monat z.b. 6 für Juni
-int Day - Tag z.b. 18
-int Hour - Stunde
-int Minute - Minute
+### Limits
 
-Rückgabewert
-bool DaylightSaving - TRUE/HIGH wenn Sommerzeit
+- `uint32_t` seconds overflow in February 2106.
+- Daylight saving rules are the **EU rules** (last Sunday of March/October, 01:00 UTC). Other regions are not supported.
 
+## Tests
 
-DayOfYear
+The library is tested on a PC against the C standard library for every day from 1970 to 2099:
 
-Die Funktion DayOfYear berechnet den Tag des Jahres aus dem Eingangsdatum. Schaltjahre werden berücksichtigt.
+```bash
+make -C test
+```
 
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
-int Month - Monat z.b. 6 für Juni
-int Day - Tag z.b. 18
+Continuous integration also compiles the example for Arduino Uno and Mega.
 
-Rückgabewert
-int DayOfYear - Tag im Jahr z.b. (05.01.2012 = 5 .... 31.12.2012 = 366)
+## Changelog
 
+See [CHANGELOG.md](CHANGELOG.md).
 
-LeapYear
+## License
 
-Die Funktion LeapYear testet, ob das Eingangsjahr ein Schaltjahr ist und gibt gegebenenfalls TRUE bzw. "1" aus. Gültig für 1901 bis 2099.
-
-Übergabewerte
-int Year - Jahreszahl (4-stellig) z.b. 2014
-
-Rückgabewert
-int LeapYear - Schaltjahr aktiv (1 = Ja)
-
-sunMiddayTimeUTC - noch beta
-
-Die Funktion sunMiddayTimeUTC berechnet abhängig vom Tagesdatum zu welcher Tageszeit die Sonne exakt im Süden steht. Die Berechnung erfolgt in UTC (Weltzeit).
-
-Übergabewerte
-float Lon - Längengrad des Bezugsortes.
-int Year - Jahreszahl (4-stellig) z.b. 2014
-int Month - Monat z.b. 6 für Juni
-int Day - Tag z.b. 18
-
-Rückgabewert
-float sunMiddayTimeUTC - Tageszeit, Sonne exakt im Süden. Die Uhrzeit wird als Float zurückgeben und muss noch umgerechnet werden.
-
-DTToInt
-
-Die Funktion DTToInt konvertiert das Datums- und Zeit-Format in Sekunden seit 1970 (Unix-Zeitformat) Hinweis: Bei der Funktion makeTime aus Time.h/.cpp fehlt der Offset von 1970.
-
-Übergabewerte
-dtElements dt - Datum und Uhrzeit als struct
-	uint32_t Year	Jahreszahl (4-stellig)
-    	uint8_t Month	Monat
-    	uint8_t Day 	Tag
-    	uint8_t Hour	Stunde
-    	uint8_t Minute	Minute
-    	uint8_t Second	Sekunde
-
-Rückgabewert
-unsigned long DTToInt - Sekunden seit 01.01.1970 00:00
-
-IntToDT
-
-Die Funktion IntToDT konvertiert Sekunden seit 1970 in Datum und Zeit.
-Hinweis: Bei der Funktion breakTime aus Time.h/.cpp fehlt der Offset von 1970.
-
-Übergabewerte
-uint32_t - Seconds - Sekunden seit 01.01.1970 00:00
-
-Übergabewerte bzw. Rückgabewert
-dtElements dt - Datum und Uhrzeit als struct
-	uint32_t Year	Jahreszahl (4-stellig)
-    	uint8_t Month	Monat
-    	uint8_t Day 	Tag
-    	uint8_t Hour	Stunde
-    	uint8_t Minute	Minute
-    	uint8_t Second	Sekunde
+See [LICENSE](LICENSE).

@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run host unit tests
+        run: make -C test
+
+  compile-example:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fqbn: ["arduino:avr:uno", "arduino:avr:mega"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/compile-sketches@v1
+        with:
+          fqbn: ${{ matrix.fqbn }}
+          libraries: |
+            - source-path: ./
+          sketch-paths: |
+            - examples/DTutils

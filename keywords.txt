@@ -1,0 +1,11 @@
+dtElements	KEYWORD1
+DayOfWeek	KEYWORD2
+StartDateDaylightSaving	KEYWORD2
+EndDateDaylightSaving	KEYWORD2
+DaylightSaving	KEYWORD2
+DayOfYear	KEYWORD2
+LeapYear	KEYWORD2
+SunMiddayTimeUTC	KEYWORD2
+DTToInt	KEYWORD2
+IntToDT	KEYWORD2
+LocalTimeToUTC	KEYWORD2

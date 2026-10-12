@@ -1,10 +1,8 @@
 #include <DTutils.h>
-#include <Time.h>
 
 int TimeZone = +1; //Zeitzone vorgeben
 dtElements dt_to_int;
 dtElements int_to_dt;
-tmElements_t tm;
 
 void setup() {
   // put your setup code here, to run once:
@@ -24,6 +22,12 @@ void loop() {
 
   Serial.print("End Date DaylightSaving: ");
   Serial.println(EndDateDaylightSaving(2014));
+
+  Serial.print("Daylight saving (UTC 2014-06-17 12:00): ");
+  Serial.println(DaylightSaving(2014, 6, 17, 12, 0));
+
+  Serial.print("Solar noon Berlin (UTC hours): ");
+  Serial.println(SunMiddayTimeUTC(13.4, 2014, 6, 17));
 
   dt_to_int.Year = 2014;
   dt_to_int.Month = 6;
